@@ -1,0 +1,28 @@
+P=AntHill
+Q=lab3
+R=Ant
+CFLAGS= -Wall -Wextra -DDEBUG -g -pedantic -std=c++14
+
+
+all: $(Q)
+
+$(R).o: $(R).cpp $(R).h
+	g++ $(CFLAGS) -c $(R).cpp -o $(R).o
+
+$(P).o: $(P).cpp $(P).h
+	g++ $(CFLAGS) -c $(P).cpp -o $(P).o
+
+$(Q).o: $(Q).cpp $(P).h
+	g++ $(CFLAGS) -c $(Q).cpp -o $(Q).o
+
+$(Q): $(P).o $(Q).o $(R).o
+	g++ $(P).o $(Q).o $(R).o -o $(Q) $(CFLAGS)
+
+run: all
+	./$(Q)
+
+checkmem: all
+	valgrind ./$(Q)
+
+clean: 
+	rm $(Q).o $(P).o $(R).o $(Q)
